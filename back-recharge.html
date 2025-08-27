@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本上網卡 - 反面（可增值版）</title>
+    <style id="card-styles">
+        :root {
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --border-color: #eee;
+            --text-color-primary: #333;
+            --text-color-secondary: #666;
+            --pink-dark: #F06292;
+            --pink-medium: #EC407A;
+            --pink-light: #F8BBD0;
+            --pink-very-light: #FCE4EC;
+            --blue: #1677ff;
+            --blue-dark: #0b5ed7;
+            --editable-focus-color: #007BFF;
+            --button-bg-color: #007bff;
+            --button-hover-bg-color: #0056b3;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        #export-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: var(--button-bg-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        #export-button:hover { background-color: var(--button-hover-bg-color); }
+        #export-button:active { transform: scale(0.98); }
+
+        .card-container {
+            display: flex;
+            width: 1000px;
+            height: 714px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            background-color: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        /* --- Editable Fields Style --- */
+        [contenteditable="true"] {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        [contenteditable="true"]:hover { background-color: rgba(0, 123, 255, 0.1); }
+        [contenteditable="true"]:focus {
+            background-color: #fff;
+            color: #000;
+            outline: 2px solid var(--editable-focus-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        /* --- 高亮样式 --- */
+        .highlight-changes {
+            background-color: #ffeb3b !important;
+            border-radius: 2px;
+            padding: 1px 3px;
+        }
+
+        /* --- Panel Structure --- */
+        .left-panel, .right-panel {
+            width: 500px;
+            height: 714px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .left-panel { padding: 25px; background-color: #fff; border-right: 1px dashed #ccc; }
+        .right-panel { background-color: var(--pink-light); padding: 0; position: relative; }
+
+        /* --- 左侧：可增值信息区 --- */
+        .recharge-note {
+            background: #f5f9ff;
+            border: 2px solid #d6e4ff;
+            color: #2b3a55;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            line-height: 1.5;
+            margin: 0 auto 10px;
+            width: 85%;
+        }
+
+        /* --- 仿截图：粗蓝边可编辑产品资讯表 --- */
+        .product-info-table {
+            width: 85%;
+            border-collapse: collapse;
+            border: 5px solid #0a4aa6;
+            margin: 0 auto 10px;
+            color: #0a4aa6;
+        }
+        .product-info-table td { padding: 3px 5px; vertical-align: middle; }
+        .product-info-table tr + tr td { border-top: 4px solid #0a4aa6; }
+        .product-info-table td + td { border-left: 4px solid #0a4aa6; }
+        .product-info-table .left .cn { font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
+        .product-info-table .left .en { font-size: 10px; opacity: 0.95; margin-top: 2px; }
+        .product-info-table .right { text-align: center; }
+        .product-info-table .right .value { font-size: 30px; font-weight: 900; letter-spacing: 0.25px; line-height: 1; white-space: nowrap; }
+        .product-info-table .right .value .unit { font-size: 16px; font-weight: 900; margin-left: 6px; }
+        .product-info-table .right .sub { font-size: 11px; margin-top: 3px; font-weight: 700; }
+
+        /* 有效期行：數字與單位並排，且單位較小 */
+        .product-info-table .right .value.inline { display: inline-flex; align-items: baseline; gap: 4px; }
+        .product-info-table .right .value.inline .number { font-size: 30px; font-weight: 900; }
+        .product-info-table .right .value.inline .unit { font-size: 12px; font-weight: 800; margin-left: 0; }
+        .product-info-table .right .value.inline .unit-en { font-size: 11px; font-weight: 700; }
+
+        .image-block { margin: 10px auto 0; width: 85%; }
+        .image-block img { width: 100%; height: auto; border: 1px solid #eee; border-radius: 8px; display: block; max-width: 100%; }
+
+        /* --- 右侧内容（沿用原有布局） --- */
+        .right-content { padding: 25px; height: 100%; display: flex; flex-direction: column; position: relative; }
+
+        .sim-shapes-container { flex-grow: 1; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .sim-shapes { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .sim-shape-row { display: flex; gap: 30px; align-items: center; }
+        .sim-shape { border: 2px solid #333; background-color: rgba(255,255,255,0.3); }
+        .sim-micro { width: 120px; height: 80px; border-radius: 8px; position: relative; }
+        .sim-micro::before { content: ''; position: absolute; top: 10px; right: 10px; width: 15px; height: 15px; background: transparent; border-radius: 0 0 0 8px; box-shadow: -8px -8px 0 0 #333; }
+        .sim-nano { width: 90px; height: 60px; border-radius: 6px; position: relative; }
+        .sim-nano::before { content: ''; position: absolute; top: 8px; right: 8px; width: 12px; height: 12px; background: transparent; border-radius: 0 0 0 6px; box-shadow: -6px -6px 0 0 #333; }
+        .sim-full { width: 160px; height: 100px; border-radius: 10px; position: relative; }
+        .sim-full::before { content: ''; position: absolute; top: 15px; right: 15px; width: 20px; height: 20px; background: transparent; border-radius: 0 0 0 10px; box-shadow: -10px -10px 0 0 #333; }
+
+        .service-info { background-color: var(--pink-medium); color: white; padding: 15px; border-radius: 15px; margin-bottom: 20px; width: fit-content; max-width: 300px; margin-left: auto; margin-right: 0; }
+        .service-title { font-size: 12px; font-weight: bold; margin-bottom: 10px; text-align: center; }
+        .service-numbers { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+        .service-item { display: flex; flex: 1; text-align: center; background-color: rgba(255,255,255,0.2); padding: 8px 5px; border-radius: 8px; font-size: 10px; }
+        .service-item .number { font-weight: bold; font-size: 14px; display: flex; justify-content: center; align-items: center; margin-bottom: 2px; }
+
+        .network-info { font-size: 10px; color: var(--text-color-secondary); text-align: center; margin-bottom: 15px; }
+
+        .qr-app-section { display: flex; align-items: center; justify-content: space-between; background-color: rgba(255,255,255,0.8); padding: 12px; border-radius: 10px; margin-top: auto; font-size: 10px; }
+        .qr-code { width: 50px; height: 50px; background-color: #333; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; color: white; font-size: 8px; border-radius: 4px; }
+        .app-info { flex: 1; margin-left: 15px; color: var(--text-color-primary); }
+        .app-info .app-title { font-weight: bold; font-size: 11px; margin-bottom: 2px; }
+        .app-logo { width: 40px; height: 20px; background-color: var(--pink-medium); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 8px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<button id="export-button">导出为 HTML（高亮修改内容）</button>
+
+<div class="card-container" id="card-to-export">
+    <div class="left-panel">
+        <!-- 顶部蓝色提示及可编辑表格（可增值信息） -->
+        <div class="recharge-note" contenteditable="true">
+            客戶可於數據使用完畢或有效期屆滿後30日內為SIM卡增值以續期或購買以下服務。
+            Customer can recharge the SIM card for service resumption in 30 days after the data is used up or the validity period expires.
+        </div>
+
+        <table class="product-info-table" style="table-layout: fixed;">
+            <tbody>
+                <tr>
+                    <td class="left" style="width: 42%;">
+                        <div class="cn" contenteditable="true">收費</div>
+                        <div class="en" contenteditable="true">Tariff</div>
+                    </td>
+                    <td class="right" colspan="1">
+                        <div class="value"><span contenteditable="true">HK$350</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">
+                        <div class="cn" contenteditable="true">數據組合</div>
+                        <div class="en" contenteditable="true">Data package</div>
+                    </td>
+                    <td class="right">
+                        <div class="value"><span contenteditable="true">200GB</span> <span class="unit" contenteditable="true"></span></div>
+                        <div class="sub" contenteditable="true">香港數據 Hong Kong Data</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">
+                        <div class="cn" contenteditable="true">有效期</div>
+                        <div class="en" contenteditable="true">Validity period</div>
+                    </td>
+                    <td class="right">
+                        <div class="value inline">
+                            <span class="number" contenteditable="true">365</span>
+                            <span class="unit" contenteditable="true">日</span>
+                            <span class="unit-en" contenteditable="true">Days</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 增值方法（整塊為圖片） -->
+        <div class="image-block">
+            <img src="/recharge-methods.png" alt="增值方法 Recharge methods" />
+        </div>
+
+        <!-- 啟用方法（整塊為圖片） -->
+        <div class="image-block">
+            <img src="/sim-activation.png" alt="啟用SIM卡 SIM Activation" />
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="right-content">
+            <div class="sim-shapes-container">
+                <div class="sim-shapes">
+                    <div class="sim-shape-row">
+                        <div class="sim-shape sim-micro"></div>
+                        <div class="sim-shape sim-nano"></div>
+                    </div>
+                    <div class="sim-shape sim-full"></div>
+                </div>
+            </div>
+
+            <div class="service-info">
+                <div class="service-title" contenteditable="true">自助服務<br>Self-help service</div>
+                <div class="service-numbers">
+                    <div class="service-item">
+                        <div contenteditable="true">查詢SIM卡有效期<br>手機撥打<br>For checking SIM card<br>validity, please dial</div>
+                        <span class="number" contenteditable="true">*118*35#</span>
+                    </div>
+                    <div class="service-item">
+                        <div contenteditable="true">查詢數據使用量<br>手機撥打<br>For checking data<br>usage, please dial</div>
+                        <span class="number" contenteditable="true">*118*50#</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="network-info" contenteditable="true">
+                於下列地區使用，請使用指定之網絡營商<br>
+                Please use designated network operator when using in the following destination:<br><br>
+                <strong>日本 Japan：KDDI (5G, LTE) & Softbank (5G, LTE)</strong>
+            </div>
+
+            <div class="qr-app-section">
+                <div class="qr-code">QR</div>
+                <div class="app-info">
+                    <div class="app-title" contenteditable="true">下載MyCUniq APP，7x24小時體驗順心 關懷貼心</div>
+                    <div style="font-size: 9px;">Download MyCUniq APP, 7x24 hours all-rounded experience.</div>
+                </div>
+                <div class="app-logo" contenteditable="true">CUniq</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="/src/back/main.ts"></script>
+
+</body>
+</html>
+
+

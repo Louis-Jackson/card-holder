@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本3日上網卡 - 反面</title>
+    <style id="card-styles">
+        :root {
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --border-color: #eee;
+            --text-color-primary: #333;
+            --text-color-secondary: #666;
+            --pink-dark: #F06292;
+            --pink-medium: #EC407A;
+            --pink-light: #F8BBD0;
+            --pink-very-light: #FCE4EC;
+            --red-notice: #E57373;
+            --editable-focus-color: #007BFF;
+            --button-bg-color: #007bff;
+            --button-hover-bg-color: #0056b3;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        #export-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: var(--button-bg-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        #export-button:hover { background-color: var(--button-hover-bg-color); }
+        #export-button:active { transform: scale(0.98); }
+
+        .card-container {
+            display: flex;
+            width: 1000px;
+            height: 714px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            background-color: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        /* --- Editable Fields Style --- */
+        [contenteditable="true"] {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        [contenteditable="true"]:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+        [contenteditable="true"]:focus {
+            background-color: #fff;
+            color: #000;
+            outline: 2px solid var(--editable-focus-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        /* --- 新增高亮样式 --- */
+        .highlight-changes {
+            background-color: #ffeb3b !important;
+            border-radius: 2px;
+            padding: 1px 3px;
+        }
+
+        /* --- Panel Structure --- */
+        .left-panel, .right-panel {
+            width: 500px;
+            height: 714px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .left-panel {
+            padding: 25px;
+            background-color: #fff;
+            border-right: 1px dashed #ccc;
+        }
+
+        .right-panel {
+            background-color: var(--pink-light);
+            padding: 0;
+            position: relative;
+        }
+
+        /* --- 左侧内容布局 --- */
+        .activation-section {
+            margin-bottom: 25px;
+        }
+
+        .speech-bubble {
+            background-color: var(--pink-light);
+            border: 3px solid var(--pink-medium);
+            padding: 15px 20px;
+            border-radius: 50px;
+            position: relative;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid var(--pink-medium);
+        }
+
+        .speech-bubble h2 {
+            color: var(--pink-medium);
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .speech-bubble .subtitle {
+            color: var(--text-color-secondary);
+            font-size: 12px;
+            margin: 5px 0 0 0;
+        }
+
+        .activation-text {
+            font-size: 11px;
+            line-height: 1.6;
+            color: var(--text-color-primary);
+            margin-bottom: 20px;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .steps-list li {
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--pink-medium);
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter, lower-roman) ')';
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .steps-list {
+            counter-reset: step-counter;
+        }
+
+        .english-section {
+            font-size: 10px;
+            line-height: 1.5;
+            color: var(--text-color-secondary);
+            margin-top: 25px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+
+        .english-steps {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            counter-reset: eng-step-counter;
+        }
+
+        .english-steps li {
+            margin-bottom: 6px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .english-steps li::before {
+            content: '(' counter(eng-step-counter, lower-roman) ')';
+            counter-increment: eng-step-counter;
+            position: absolute;
+            left: 0;
+            color: var(--pink-medium);
+        }
+
+        /* --- 右侧内容布局 --- */
+        .right-content {
+            padding: 25px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .non-rechargeable {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 11px;
+        }
+
+        .non-rechargeable-icon {
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .non-rechargeable-icon::before {
+            content: '⚠';
+            color: var(--pink-medium);
+            font-size: 14px;
+        }
+
+        .sim-shapes-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .sim-shapes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .sim-shape-row {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .sim-shape {
+            border: 2px solid #333;
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .sim-micro {
+            width: 120px;
+            height: 80px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .sim-micro::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            background: transparent;
+            border-radius: 0 0 0 8px;
+            box-shadow: -8px -8px 0 0 #333;
+        }
+
+        .sim-nano {
+            width: 90px;
+            height: 60px;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .sim-nano::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 12px;
+            height: 12px;
+            background: transparent;
+            border-radius: 0 0 0 6px;
+            box-shadow: -6px -6px 0 0 #333;
+        }
+
+        .sim-full {
+            width: 160px;
+            height: 100px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .sim-full::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            border-radius: 0 0 0 10px;
+            box-shadow: -10px -10px 0 0 #333;
+        }
+
+        .service-info {
+            background-color: var(--pink-medium);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            width: fit-content;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .service-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .service-numbers {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .service-item {
+            display: flex;
+            flex: 1;
+            text-align: center;
+            background-color: rgba(255,255,255,0.2);
+            padding: 8px 5px;
+            border-radius: 8px;
+            font-size: 10px;
+        }
+
+        .service-item .number {
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .network-info {
+            font-size: 10px;
+            color: var(--text-color-secondary);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .qr-app-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(255,255,255,0.8);
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: auto;
+            font-size: 10px;
+        }
+
+        .qr-code {
+            width: 50px;
+            height: 50px;
+            background-color: #333;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 8px;
+            border-radius: 4px;
+        }
+
+        .app-info {
+            flex: 1;
+            margin-left: 15px;
+            color: var(--text-color-primary);
+        }
+
+        .app-info .app-title {
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .app-logo {
+            width: 40px;
+            height: 20px;
+            background-color: var(--pink-medium);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<button id="export-button">导出为 HTML（高亮修改内容）</button>
+
+<div class="card-container" id="card-to-export">
+    <div class="left-panel">
+        <div class="activation-section">
+            <div class="speech-bubble">
+                <h2 contenteditable="true">輕鬆啟動SIM卡</h2>
+                <div class="subtitle">SIM Activation</div>
+            </div>
+
+            <div class="activation-text">
+                SIM卡插入手機並收到網絡訊號，即已自動激活SIM卡並啟用服務。<br>
+                SIM卡服務之<span contenteditable="true">有效期</span>由激活及啟用服務當日起計。成功啟用後，你的手機將會收到<span contenteditable="true">確認短訊</span>，短訊內容包括SIM卡的<span contenteditable="true">服務號碼</span>及<span contenteditable="true">有效日期</span>等資訊。若未能透過上述方法成功啟用，請照以下聯絡當手機設定：
+            </div>
+
+            <ul class="steps-list">
+                <li contenteditable="true">開啟數據漫遊功能</li>
+                <li>流動網絡 > 接入點名稱 (APN) 設定為 <span contenteditable="true">3gnet</span></li>
+                <li contenteditable="true">開啟VoLTE功能</li>
+                <li contenteditable="true">重新啟動手機</li>
+            </ul>
+        </div>
+
+        <div class="english-section">
+            Insert the SIM card into the mobile phone and the mobile network signal will be detected. This means the SIM card has been activated automatically and the service has been commenced. The <span contenteditable="true">validity period</span> of the SIM card service starts from the day of activation and service commencement. Upon successful activation, your mobile phone will receive a <span contenteditable="true">confirmation SMS</span> with the SIM card <span contenteditable="true">service number</span> and <span contenteditable="true">expiry date</span> etc. If you are unable to activate the SIM card, please check your <span contenteditable="true">mobile phone setting</span> as below.
+
+            <ul class="english-steps">
+                <li contenteditable="true">Turn on data roaming</li>
+                <li>Mobile Data > APN : <span contenteditable="true">3gnet</span></li>
+                <li contenteditable="true">Turn on VoLTE</li>
+                <li contenteditable="true">Restart your mobile phone</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="right-content">
+            <div class="non-rechargeable">
+                <div class="non-rechargeable-icon"></div>
+                <div>
+                    <div contenteditable="true">此卡不設增值</div>
+                    <div style="font-size: 9px;">The SIM card is non-rechargeable</div>
+                </div>
+            </div>
+
+            <div class="sim-shapes-container">
+                <div class="sim-shapes">
+                    <div class="sim-shape-row">
+                        <div class="sim-shape sim-micro"></div>
+                        <div style="width: 80px; height: 60px; border: 2px solid #333; border-radius: 50%;"></div>
+                    </div>
+                    <div class="sim-shape sim-full"></div>
+                </div>
+            </div>
+
+            <div class="service-info">
+                <div class="service-title" contenteditable="true">自助服務<br>Self-help service</div>
+                <div class="service-numbers">
+                    <div class="service-item">
+                        <div contenteditable="true">查詢SIM卡有效期<br>手機撥打<br>For checking SIM card<br>validity, please dial</div>
+                        <span class="number" contenteditable="true">*118*35#</span>
+                    </div>
+                    <div class="service-item">
+                        <div contenteditable="true">查詢數據使用量<br>手機撥打<br>For checking data<br>usage, please dial</div>
+                        <span class="number" contenteditable="true">*118*50#</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="network-info" contenteditable="true">
+                於下列地區使用，請使用指定之網絡營商<br>
+                Please use designated network operator when using in the following destination:<br><br>
+                <strong>日本 Japan：KDDI (5G, LTE) & Softbank (5G, LTE)</strong>
+            </div>
+
+            <div class="qr-app-section">
+                <div class="qr-code">QR</div>
+                <div class="app-info">
+                    <div class="app-title" contenteditable="true">下載MyCUniq APP，7x24小時體驗順心 關懷貼心</div>
+                    <div style="font-size: 9px;">Download MyCUniq APP, 7x24 hours all-rounded experience.</div>
+                </div>
+                <div class="app-logo" contenteditable="true">CUniq</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 存储原始值的对象
+    const originalValues = {};
+
+    // 初始化时保存所有可编辑元素的原始值
+    document.addEventListener('DOMContentLoaded', function() {
+        const editableElements = document.querySelectorAll('[contenteditable="true"]');
+        editableElements.forEach((el, index) => {
+            // 为每个元素添加唯一的数据属性
+            el.setAttribute('data-element-id', index);
+            originalValues[el] = el.innerHTML;
+
+            // 监听内容变化
+            el.addEventListener('input', function() {
+                if (el.innerHTML !== originalValues[el]) {
+                    el.classList.add('modified');
+                } else {
+                    el.classList.remove('modified');
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const exportButton = document.getElementById('export-button');
+
+        if (exportButton) {
+            exportButton.addEventListener('click', async function() {
+                try {
+                    const cardToExport = document.getElementById('card-to-export');
+                    const styles = document.getElementById('card-styles');
+
+                    if (!cardToExport || !styles) {
+                        alert('无法找到要导出的内容');
+                        return;
+                    }
+
+                    // 让用户自定义文件名
+                    const defaultFileName = 'sim-card-back-highlighted-' + new Date().toISOString().slice(0,19).replace(/:/g,'-');
+                    const fileName = prompt('请输入导出文件名（不包含.html后缀）:', defaultFileName);
+                    
+                    if (!fileName) {
+                        return; // 用户取消了
+                    }
+
+                    // 克隆一份用于导出的节点
+                    const exportCard = cardToExport.cloneNode(true);
+
+                    // 高亮所有修改过的内容
+                    const modifiedElements = document.querySelectorAll('.modified');
+                    modifiedElements.forEach(originalEl => {
+                        const elementId = originalEl.getAttribute('data-element-id');
+                        if (elementId) {
+                            const exportEl = exportCard.querySelector(`[data-element-id="${elementId}"]`);
+                            if (exportEl) {
+                                exportEl.classList.add('highlight-changes');
+                            }
+                        }
+                    });
+
+                    const cardHTML = exportCard.outerHTML;
+                    const stylesContent = styles.innerHTML;
+
+                    const fullHTML = `<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本3日上網卡 - 反面（高亮修改版）</title>
+    <style>
+        ${stylesContent}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .print-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .print-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .print-button:hover {
+            background-color: #218838;
+        }
+
+        .edit-mode-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .edit-mode-button:hover {
+            background-color: #0056b3;
+        }
+
+        @media print {
+            .print-controls {
+                display: none !important;
+            }
+            body {
+                padding: 0;
+                background-color: white;
+            }
+            .card-container {
+                box-shadow: none;
+            }
+        }
+
+        .view-mode [contenteditable="true"] {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .view-mode [contenteditable="true"]:hover {
+            background-color: transparent;
+        }
+
+        .view-mode [contenteditable="true"]:focus {
+            outline: none;
+            box-shadow: none;
+            background-color: transparent;
+        }
+
+        /* 高亮修改内容的样式 */
+        .highlight-changes {
+            background-color: #ffeb3b !important;
+            border-radius: 2px;
+            padding: 1px 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="print-controls">
+        <button class="print-button" onclick="window.print()">打印</button>
+    </div>
+
+    ${cardHTML}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('SIM卡反面设计已加载，修改内容已高亮显示');
+        });
+    <\/script>
+</body>
+</html>`;
+
+                    // 检查是否支持文件系统访问API
+                    if ('showSaveFilePicker' in window) {
+                        try {
+                            // 使用现代文件系统访问API
+                            const fileHandle = await window.showSaveFilePicker({
+                                suggestedName: fileName + '.html',
+                                types: [{
+                                    description: 'HTML files',
+                                    accept: {
+                                        'text/html': ['.html']
+                                    }
+                                }]
+                            });
+                            
+                            const writable = await fileHandle.createWritable();
+                            await writable.write(fullHTML);
+                            await writable.close();
+                            
+                            alert('导出成功！修改内容已用黄色高亮显示');
+                            return;
+                        } catch (e) {
+                            if (e.name !== 'AbortError') {
+                                console.error('文件API导出失败:', e);
+                            } else {
+                                return; // 用户取消了文件选择
+                            }
+                        }
+                    }
+                    
+                    // 降级到传统下载方式
+                    const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName + '.html';
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    console.log('已导出高亮修改内容的SIM卡反面HTML文件');
+                    alert('导出成功！修改内容已用黄色高亮显示');
+
+                } catch (error) {
+                    console.error('导出失败:', error);
+                    alert('导出失败，请检查控制台错误信息');
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
