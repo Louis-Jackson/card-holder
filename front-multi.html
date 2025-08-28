@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多地區上網卡 - 正面（Multi-Region）</title>
+<style id="card-styles">
+    :root {
+        --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        --border-color: #eee;
+        --text-color-primary: #333;
+        --text-color-secondary: #555;
+        --pink-dark: #F06292;
+        --pink-medium: #EC407A;
+        --pink-light: #F8BBD0;
+        --red-notice: #E57373;
+        --editable-focus-color: #007BFF;
+        --button-bg-color: #007bff;
+        --button-hover-bg-color: #0056b3;
+    }
+
+    body { display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f2f5; font-family: var(--font-family); margin: 0; padding: 40px 20px; box-sizing: border-box; }
+
+    #export-button { padding: 12px 25px; font-size: 16px; font-weight: bold; color: white; background-color: var(--button-bg-color); border: none; border-radius: 8px; cursor: pointer; margin-bottom: 30px; transition: background-color 0.3s, transform 0.1s; }
+    #export-button:hover { background-color: var(--button-hover-bg-color); }
+    #export-button:active { transform: scale(0.98); }
+
+    .card-container { display: flex; width: 1000px; height: 714px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); background-color: #fff; border-radius: 20px; overflow: hidden; }
+
+    [contenteditable="true"] { cursor: pointer; padding: 2px 4px; border-radius: 3px; transition: background-color 0.2s, box-shadow 0.2s; }
+    [contenteditable="true"]:hover { background-color: rgba(0, 0, 0, 0.05); }
+    [contenteditable="true"]:focus { background-color: #fff; color: #000; outline: 1px solid var(--editable-focus-color); box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); }
+    .top-section [contenteditable="true"]:focus { background-color: rgba(255,255,255,0.9); }
+    .main-content [contenteditable="true"]:focus { background-color: rgba(255,255,255,0.7); }
+
+    .left-panel, .right-panel { width: 500px; height: 714px; display: flex; flex-direction: column; box-sizing: border-box; }
+    .left-panel { padding: 25px; border-right: 1px dashed #ccc; }
+    .right-panel { padding: 0; overflow: hidden; }
+
+    .barcode-section { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+    .barcode-area { display: flex; flex-direction: column; align-items: flex-start; }
+    .barcode-placeholder { width: 180px; height: 40px; border: 1px dashed #999; background: repeating-linear-gradient(90deg,#000 0px,#000 1px,#fff 1px,#fff 2px,#000 2px,#000 3px,#fff 3px,#fff 5px); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #666; margin-bottom: 5px; border-radius: 2px; }
+    .barcode-number { font-family: 'Courier New', monospace; font-size: 10px; color: var(--text-color-primary); letter-spacing: 1px; padding: 2px 4px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 2px; min-width: 120px; text-align: center; }
+    .barcode-number:focus { background-color: #fff; border-color: var(--editable-focus-color); }
+
+    .left-content { display: flex; flex-direction: column; height: 100%; }
+    .contact-info { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-color-primary); padding-bottom: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+    .contact-info .col { display: flex; flex-direction: column; line-height: 1.4; padding: 0 3px; flex: 1; }
+    .contact-info .col span:first-child { font-weight: bold; }
+    .sim-cutouts { display: flex; justify-content: space-evenly; align-items: center; flex-grow: 1; margin-bottom: 20px; }
+    .sim-nano-container { width: 70px; height: 90px; border: 1px dashed var(--red-notice); display: flex; justify-content: center; align-items: center; border-radius: 4px; color: var(--red-notice); font-size: 12px; }
+    .sim-main-shape { width: 120px; height: 180px; border: 2px solid var(--text-color-primary); border-radius: 8px; }
+    .terms-section { font-size: 8.5px; color: var(--text-color-secondary); line-height: 1.5; border-top: 1px solid var(--border-color); padding-top: 12px; max-height: 160px; overflow-y: auto; }
+    .terms-section .final-interpretation { color: var(--red-notice); text-align: center; margin-bottom: 10px; font-size: 7.5px; }
+    .terms-section p { margin: 8px 0; word-break: break-word; }
+    .terms-section [contenteditable]:focus { background-color: #f9f9f9; }
+
+    .top-section { background-color: var(--pink-dark); padding: 20px 25px 35px; color: white; position: relative; height: 250px; box-sizing: border-box; margin: 0; }
+    .brand-info { display: flex; justify-content: flex-end; align-items: center; height: 35px; position: relative; font-size: 16px; font-weight: 500; }
+    .network-badge-placeholder { position: absolute; top: 0px; right: 120px; background-color: #FFEB3B; color: #E53935; font-weight: bold; border-radius: 50%; width: 35px; height: 35px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 9px; line-height: 1; }
+    .network-badge-placeholder hr { width: 80%; margin: 1px 0; border: 0; border-top: 1px solid #E53935; }
+    .network-badge-placeholder [contenteditable] { padding: 0; }
+
+    /* Multi-Region 标题更小，允许换行 */
+    .product-title { display: flex; flex-wrap: wrap; align-items: baseline; font-weight: bold; white-space: normal; margin-top: 4px; gap: 6px 10px; }
+    .product-title .destination { font-size: 42px; line-height: 1.05; max-width: 70%; }
+    .product-title .days { font-size: 34px; }
+    .cards-function { font-size: 34px; color: white; font-weight: 600; }
+
+    .product-subtitle { font-size: 15px; color: white; margin-top: 6px; font-weight: 600; white-space: normal; }
+
+    .price { position: absolute; right: 25px; bottom: -18px; background-color: var(--pink-medium); padding: 5px 22px; font-size: 26px; font-weight: bold; border-radius: 8px; color: white; }
+
+    .main-content { padding: 34px 30px 22px; background-color: var(--pink-light); height: calc(714px - 250px); box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; }
+
+    .bubble { display: flex; align-items: center; background-color: var(--pink-dark); color: white; padding: 8px 20px; border-radius: 35px; margin-bottom: 16px; width: fit-content; }
+    .bubble .main-text { font-weight: 900; font-size: 56px; flex-shrink: 0; margin-right: 14px; letter-spacing: 0.5px; }
+    .bubble .subtext { font-size: 11px; line-height: 1.3; font-weight: 600; }
+    .bubble.validity .main-text { font-size: 32px; }
+    .bubble.validity .subtext { font-size: 12px; font-weight: 600; margin-left: 8px; }
+
+    /* 适用地区提示块 */
+    .region-apply { background: rgba(255,255,255,0.95); color: #c62828; border-radius: 30px; padding: 10px 14px; width: fit-content; font-size: 12px; font-weight: 700; margin-top: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .region-apply .en { display: block; color: #8d6e63; font-weight: 600; font-size: 11px; margin-top: 2px; }
+
+    /* 高亮样式 */
+    .highlight-changes { background-color: #ffeb3b !important; border-radius: 2px; padding: 1px 3px; }
+</style>
+</head>
+<body>
+
+<button id="export-button">導出為 HTML（高亮修改內容）</button>
+
+<div class="card-container" id="card-to-export">
+    <div class="left-panel">
+        <div class="left-content">
+            <div class="barcode-section">
+                <div class="barcode-area">
+                    <div class="barcode-placeholder">BARCODE</div>
+                    <div class="barcode-number" contenteditable="true">4 895100 801658</div>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <div class="col"><span>客戶服務</span><span>Customer Service</span><span>hk-cs@cuniq.com</span></div>
+                <div class="col"><span>中國香港</span><span>Hong Kong China</span><span>852-2122-1188</span></div>
+                <div class="col"><span>中國內地</span><span>Mainland China</span><span>86-186-1881-0010</span></div>
+                <div class="col"><span>Whatsapp 查詢</span><span>Whatsapp Enquiry</span><span>852-6361-0010</span></div>
+            </div>
+            <div class="sim-cutouts">
+                 <div class="sim-nano-container"><span>3 in 1 SIM</span></div>
+                <div class="sim-main-shape"></div>
+            </div>
+            <div class="terms-section">
+                <div class="final-interpretation">
+                  <span>CEPA cerf no: HKSS-0003452-01</span><br>
+                  <span>中國聯通(香港)運營有限公司保留最終解釋權</span><br>
+                  <span>China Unicom (HK) Operations Ltd. reserves the right of final interpretation</span>
+                </div>
+                <p contenteditable="true">
+                    <b>條款及細則:</b> 此卡由啟用日期起計，有效期30日，不足1日亦以1日計算，均以香港時間00:00至23:59為一日計算。到期日為封面所示日數當日之香港時間23:59。提供高速數據服務，其後任用（不低於512kbps）。本產品可於封面所示的地區使用但不可在中國內地激活使用。
+                </p>
+                <p contenteditable="true">
+                    <b>Terms & Conditions:</b> The SIM card is valid for 30 days from the date of activation. It provides high speed data with thereafter unlimited data (minimum 512kbps). This product can be used in the regions shown on the cover but cannot be activated and used in mainland China.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="top-section">
+            <div class="brand-info">
+                <div class="network-badge-placeholder">
+                  <div contenteditable="true">5G</div><hr><div contenteditable="true">4G</div>
+                </div>
+                <div contenteditable="true">中國聯通</div>
+            </div>
+            <div class="product-title">
+                <div class="destination" contenteditable="true">英國及歐洲五國</div>
+                <div class="days" contenteditable="true">30日</div>
+                <div class="cards-function" contenteditable="true">上網卡</div>
+            </div>
+            <div class="product-subtitle" contenteditable="true">UK & 5 European countries 30-Day Data SIM</div>
+            <div class="price" contenteditable="true">HK$248</div>
+        </div>
+        <div class="main-content">
+            <div class="bubble data">
+                <div class="main-text" contenteditable="true">20GB</div>
+                <div class="subtext" contenteditable="true">高速數據 + 其後任用<br>High Speed Data + Thereafter unlimited data<br>(minimum 512kbps)</div>
+            </div>
+
+            <div class="region-apply">
+                <span contenteditable="true">適用於：英國、意大利、愛爾蘭、瑞典、丹麥、奧地利</span>
+                <span class="en" contenteditable="true">Applicable for: UK, Italy, Ireland, Sweden, Denmark, Austria</span>
+            </div>
+
+            <div class="bubble validity" style="margin-top: 14px;">
+                <div class="main-text" contenteditable="true">5G</div>
+                <div class="subtext" contenteditable="true">5G/4G 網絡 Network</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="/src/front/main.ts"></script>
+
+</body>
+</html>
+
+

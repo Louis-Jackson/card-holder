@@ -11,6 +11,7 @@ export default defineConfig({
         back: resolve(__dirname, 'back.html'),
         frontDaily: resolve(__dirname, 'front-daily.html'),
         backRecharge: resolve(__dirname, 'back-recharge.html'),
+        frontMulti: resolve(__dirname, 'front-multi.html'),
       },
     },
   },
